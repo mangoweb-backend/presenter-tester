@@ -1,0 +1,19 @@
+{
+	"name": "mangoweb/presenter-tester",
+	"license": "MIT",
+	"require": {
+		"php": "~7.1",
+		"nette/application": "~2.4",
+		"nette/security": "~2.4",
+		"nette/forms": "~2.4",
+		"nette/tester": "~2.0"
+	},
+	"autoload": {
+		"classmap": [
+			"src"
+		]
+	},
+	"require-dev": {
+		"nextras/secured-links": "^1.4"
+	}
+}
