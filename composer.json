@@ -8,12 +8,12 @@
 		"nette/forms": "~2.4",
 		"nette/tester": "~2.0"
 	},
+	"require-dev": {
+		"nextras/secured-links": "^1.4"
+	},
 	"autoload": {
 		"classmap": [
 			"src"
 		]
-	},
-	"require-dev": {
-		"nextras/secured-links": "^1.4"
 	}
 }
