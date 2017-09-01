@@ -201,6 +201,15 @@ class TestPresenterRequest
 	}
 
 
+	public function withFiles(array $files): TestPresenterRequest
+	{
+		$request = clone $this;
+		$request->files = $files + $this->files;
+
+		return $request;
+	}
+
+
 	public function withIdentity(IIdentity $identity = NULL): TestPresenterRequest
 	{
 		$request = clone $this;
