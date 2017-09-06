@@ -49,6 +49,10 @@ class TestPresenterRequest
 
 	public function __construct(string $presenterName, Session $session)
 	{
+		if ($session instanceof \Mangoweb\Tester\Infrastructure\Mocks\Session || $session instanceof \Kdyby\FakeSession\Session) {
+			$session->setFakeId('mango.id');
+		}
+		$session->getSection(CsrfProtection::class)->token = 'mango.token';
 		$this->presenterName = $presenterName;
 		$this->session = $session;
 	}
@@ -162,10 +166,8 @@ class TestPresenterRequest
 	{
 		$request = $this->withSignal("$formName-submit");
 		if ($withProtection) {
-			assert($this->session instanceof \Mangoweb\Tester\Infrastructure\Mocks\Session || $this->session instanceof \Kdyby\FakeSession\Session);
-			$this->session->setFakeId('mango.id');
-			$this->session->getSection(CsrfProtection::class)->token = 'mango.token';
-			$post = $post + ['_token_' => 'abcdefghijbc2dP4jNcgTMfjnxHe6Gj/Kbzpk='];
+			$token = 'abcdefghij' . base64_encode(sha1(('mango.token' ^ $this->session->getId()) . 'abcdefghij', TRUE));
+			$post = $post + ['_token_' => $token];
 		}
 		$request->post = $post;
 		$request->files = $files;
