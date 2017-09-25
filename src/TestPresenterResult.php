@@ -95,12 +95,22 @@ class TestPresenterResult
 	}
 
 
+	public function getJsonResponse(): JsonResponse
+	{
+		$response = $this->getResponse();
+		Assert::type(JsonResponse::class, $response);
+		assert($response instanceof JsonResponse);
+		return $response;
+	}
+
+
 	public function getBadRequestException(): BadRequestException
 	{
 		Assert::null($this->response);
 		assert($this->badRequestException !== NULL);
 		return $this->badRequestException;
 	}
+
 
 
 	public function assertHasResponse(string $type = NULL): self
@@ -133,11 +143,16 @@ class TestPresenterResult
 	}
 
 
-	public function assertJson(array $expected): self
+	/**
+	 * @param array|object|NULL $expected
+	 */
+	public function assertJson($expected = NULL): self
 	{
-		$this->assertHasResponse(JsonResponse::class);
-		assert($this->response instanceof JsonResponse);
-		Assert::same($expected, $this->response->getPayload());
+		$this->responseInspected = TRUE;
+		$response = $this->getJsonResponse();
+		if (func_num_args() !== 0) {
+			Assert::equal($expected, $response->getPayload());
+		}
 		return $this;
 	}
 
