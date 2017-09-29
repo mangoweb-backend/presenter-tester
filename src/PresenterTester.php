@@ -67,8 +67,10 @@ class PresenterTester
 	{
 		$applicationRequest = $this->createApplicationRequest($testRequest);
 		$presenter = $this->createPresenter($testRequest);
-		$matchedRequest = $this->router->match($this->httpRequest);
-		PresenterAssert::assertRequestMatch($applicationRequest, $matchedRequest);
+		if ($applicationRequest->getMethod() === 'GET') {
+			$matchedRequest = $this->router->match($this->httpRequest);
+			PresenterAssert::assertRequestMatch($applicationRequest, $matchedRequest);
+		}
 
 		try {
 			$response = $presenter->run($applicationRequest);
