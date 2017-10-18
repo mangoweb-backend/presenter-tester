@@ -79,7 +79,10 @@ class PresenterTester
 			$response = NULL;
 		}
 		if ($applicationRequest->getParameter(Presenter::SIGNAL_KEY) && method_exists($presenter, 'isSignalProcessed')) {
-			Assert::true($presenter->isSignalProcessed());
+			if (!$presenter->isSignalProcessed()) {
+				$cause = $badRequestException ? 'BadRequestException with code ' . $badRequestException->getCode() . ' and message "' . $badRequestException->getMessage() . '"' : get_class($response);
+				Assert::fail('Signal has not been processed at all, received ' . $cause);
+			}
 		}
 
 		$result = new TestPresenterResult($this->router, $applicationRequest, $presenter, $response, $badRequestException);
