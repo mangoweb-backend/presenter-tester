@@ -74,15 +74,15 @@ class PresenterTester
 
 		try {
 			$response = $presenter->run($applicationRequest);
-			$barRequestException = NULL;
-		} catch (BadRequestException $barRequestException) {
+			$badRequestException = NULL;
+		} catch (BadRequestException $badRequestException) {
 			$response = NULL;
 		}
 		if ($applicationRequest->getParameter(Presenter::SIGNAL_KEY) && method_exists($presenter, 'isSignalProcessed')) {
 			Assert::true($presenter->isSignalProcessed());
 		}
 
-		$result = new TestPresenterResult($this->router, $applicationRequest, $presenter, $response, $barRequestException);
+		$result = new TestPresenterResult($this->router, $applicationRequest, $presenter, $response, $badRequestException);
 		$this->results[] = $result;
 
 		return $result;
