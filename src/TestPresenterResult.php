@@ -32,6 +32,9 @@ class TestPresenterResult
 	/** @var IResponse|NULL */
 	private $response;
 
+	/** @var string|NULL */
+	private $textResponseSource;
+
 	/** @var BadRequestException|NULL */
 	private $badRequestException;
 
@@ -95,6 +98,17 @@ class TestPresenterResult
 	}
 
 
+	public function getTextResponseSource(): string
+	{
+		if (!$this->textResponseSource) {
+			$source = $this->getTextResponse()->getSource();
+			$this->textResponseSource = is_object($source) ? $source->__toString(TRUE) : (string) $source;
+			Assert::type('string', $this->textResponseSource);
+		}
+		return $this->textResponseSource;
+	}
+
+
 	public function getJsonResponse(): JsonResponse
 	{
 		$response = $this->getResponse();
@@ -132,12 +146,32 @@ class TestPresenterResult
 			$match = '%A?%' . implode('%A?%', $match) . '%A?%';
 		}
 		assert(is_string($match) || $match === NULL);
-		$response = $this->getTextResponse();
-		$source = $response->getSource();
-		$source = is_object($source) ? $source->__toString(TRUE) : (string) $source;
-		Assert::type('string', $source);
+		$source = $this->getTextResponseSource();
 		if ($match !== NULL) {
 			Assert::match($match, $source);
+		}
+		return $this;
+	}
+
+
+	/**
+	 * @param string|array $matches
+	 */
+	public function assertNotRenders($matches): self
+	{
+		if (is_string($matches)) {
+			$matches = [$matches];
+		}
+		assert(is_array($matches));
+		$this->responseInspected = TRUE;
+		$source = $this->getTextResponseSource();
+		foreach ($matches as $match) {
+			assert(is_string($match));
+			$match = "%A%$match%A%";
+			if (Assert::isMatching($match, $source)) {
+				[$pattern, $actual] = Assert::expandMatchingPatterns($match, $source);
+				Assert::fail('%1 should NOT match %2', $actual, $pattern);
+			}
 		}
 		return $this;
 	}
