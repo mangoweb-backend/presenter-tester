@@ -236,7 +236,7 @@ class TestPresenterResult
 	}
 
 
-	public function assertFormHasErrors(string $formName): self
+	public function assertFormHasErrors(string $formName, ?array $formErrors = null): self
 	{
 		$this->responseInspected = TRUE;
 		$presenter = $this->getUIPresenter();
@@ -244,6 +244,10 @@ class TestPresenterResult
 		Assert::type(Form::class, $form);
 		assert($form instanceof Form);
 		Assert::true($form->hasErrors());
+
+		if ($formErrors !== null) {
+			Assert::same($formErrors, $form->getErrors());
+		}
 
 		return $this;
 	}
