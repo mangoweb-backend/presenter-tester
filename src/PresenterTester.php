@@ -159,6 +159,9 @@ class PresenterTester
 			if ($request->isAjax()) {
 				$this->headers['x-requested-with'] = 'XMLHttpRequest';
 			}
+			else {
+				unset($this->headers['x-requested-with']);
+			}
 			$this->post = $request->getPost();
 			$this->url = $url;
 			$this->method = $request->getPost() ? 'POST' : 'GET';
