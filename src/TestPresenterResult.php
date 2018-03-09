@@ -11,7 +11,9 @@ use Nette\Application\Responses\JsonResponse;
 use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Presenter;
+use Nette\ComponentModel\Component;
 use Nette\Forms\Form;
+use Nette\Forms\IControl;
 use Nette\Http\Request as HttpRequest;
 use Nette\Http\UrlScript;
 use Tester\Assert;
@@ -226,10 +228,21 @@ class TestPresenterResult
 		Assert::type(Form::class, $form);
 		assert($form instanceof Form);
 		if ($form->hasErrors()) {
-			$errors = $form->getErrors();
+			$controls = $form->getComponents(TRUE, IControl::class);
+			$errorsStr = [];
+			foreach ($form->getOwnErrors() as $error) {
+				$errorsStr[] = "\town error: " . $error;
+			}
+			foreach ($controls as $control) {
+				assert($control instanceof Component && $control instanceof IControl);
+				$errors = $control->getErrors();
+				foreach ($errors as $error) {
+					$errorsStr[] = "\t" . $control->lookupPath(Form::class) . ": " . $error;
+				}
+			}
 			Assert::fail(
-				"Form has errors: \n" . implode("\n", $errors),
-				$errors, []
+				"Form has errors: \n" . implode("\n", $errorsStr) . "\n",
+				$form->getErrors(), []
 			);
 		}
 		return $this;
