@@ -49,7 +49,7 @@ class TestPresenterRequest
 
 	public function __construct(string $presenterName, Session $session)
 	{
-		if ($session instanceof \Mangoweb\Tester\Infrastructure\Mocks\Session || $session instanceof \Kdyby\FakeSession\Session) {
+		if ($session instanceof \Mangoweb\Tester\HttpMocks\Session) {
 			$session->setFakeId('mango.id');
 		}
 		$session->getSection(CsrfProtection::class)->token = 'mango.token';
