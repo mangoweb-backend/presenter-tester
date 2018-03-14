@@ -27,7 +27,7 @@ class PresenterTester
 	/** @var IRouter */
 	private $router;
 
-	/** @var IRequest */
+	/** @var Request */
 	private $httpRequest;
 
 	/** @var string */
@@ -56,6 +56,7 @@ class PresenterTester
 
 		$this->presenterFactory = $presenterFactory;
 		$this->router = $router;
+		assert($httpRequest instanceof Request);
 		$this->httpRequest = $httpRequest;
 		$this->baseUrl = $baseUrl;
 		$this->user = $user;
@@ -80,7 +81,12 @@ class PresenterTester
 		}
 		if ($applicationRequest->getParameter(Presenter::SIGNAL_KEY) && method_exists($presenter, 'isSignalProcessed')) {
 			if (!$presenter->isSignalProcessed()) {
-				$cause = $badRequestException ? 'BadRequestException with code ' . $badRequestException->getCode() . ' and message "' . $badRequestException->getMessage() . '"' : get_class($response);
+				if ($badRequestException) {
+					$cause = 'BadRequestException with code ' . $badRequestException->getCode() . ' and message "' . $badRequestException->getMessage() . '"';
+				} else {
+					assert($response !== null);
+					$cause = get_class($response);
+				}
 				Assert::fail('Signal has not been processed at all, received ' . $cause);
 			}
 		}
@@ -154,7 +160,7 @@ class PresenterTester
 		$refUrl = (new UrlScript($this->baseUrl))->setScriptPath('/');
 		$url = (new UrlScript($this->router->constructUrl($appRequest, $refUrl)))->setScriptPath('/');
 
-		(function () use ($request, $url) {
+		\Closure::bind(function () use ($request, $url) {
 			/** @var Request $this */
 			if ($request->isAjax()) {
 				$this->headers['x-requested-with'] = 'XMLHttpRequest';
@@ -165,7 +171,7 @@ class PresenterTester
 			$this->post = $request->getPost();
 			$this->url = $url;
 			$this->method = $request->getPost() ? 'POST' : 'GET';
-		})->bindTo($this->httpRequest, Request::class)->__invoke();
+		}, $this->httpRequest, Request::class)->__invoke();
 	}
 
 
