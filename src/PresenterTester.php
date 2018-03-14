@@ -50,8 +50,9 @@ class PresenterTester
 		IRouter $router,
 		IRequest $httpRequest,
 		User $user,
-		callable $identityFactory = NULL
-	) {
+		callable $identityFactory = null
+	)
+	{
 		$this->session = $session;
 
 		$this->presenterFactory = $presenterFactory;
@@ -75,9 +76,9 @@ class PresenterTester
 
 		try {
 			$response = $presenter->run($applicationRequest);
-			$badRequestException = NULL;
+			$badRequestException = null;
 		} catch (BadRequestException $badRequestException) {
-			$response = NULL;
+			$response = null;
 		}
 		if ($applicationRequest->getParameter(Presenter::SIGNAL_KEY) && method_exists($presenter, 'isSignalProcessed')) {
 			if (!$presenter->isSignalProcessed()) {
@@ -140,7 +141,7 @@ class PresenterTester
 
 	protected function loginUser(TestPresenterRequest $request): void
 	{
-		$this->user->logout(TRUE);
+		$this->user->logout(true);
 		$identity = $request->getIdentity();
 		if (!$identity && $request->shouldHaveIdentity()) {
 			if (!$this->identityFactory) {
@@ -164,8 +165,7 @@ class PresenterTester
 			/** @var Request $this */
 			if ($request->isAjax()) {
 				$this->headers['x-requested-with'] = 'XMLHttpRequest';
-			}
-			else {
+			} else {
 				unset($this->headers['x-requested-with']);
 			}
 			$this->post = $request->getPost();
@@ -177,8 +177,7 @@ class PresenterTester
 
 	protected function setupUIPresenter(Presenter $presenter): void
 	{
-		$presenter->autoCanonicalize = FALSE;
+		$presenter->autoCanonicalize = false;
 		$presenter->invalidLinkMode = Presenter::INVALID_LINK_EXCEPTION;
 	}
-
 }

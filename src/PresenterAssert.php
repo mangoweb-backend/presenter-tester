@@ -12,10 +12,10 @@ class PresenterAssert
 	use StaticClass;
 
 
-	public static function assertRequestMatch(Request $expected, ?Request $actual, bool $onlyIntersectedParameters = TRUE): void
+	public static function assertRequestMatch(Request $expected, ?Request $actual, bool $onlyIntersectedParameters = true): void
 	{
-		Assert::notSame(NULL, $actual);
-		assert($actual !== NULL);
+		Assert::notSame(null, $actual);
+		assert($actual !== null);
 		Assert::same($expected->getPresenterName(), $actual->getPresenterName());
 		$expectedParameters = $expected->getParameters();
 		$actualParameters = $actual->getParameters();

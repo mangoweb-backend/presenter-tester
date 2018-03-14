@@ -21,7 +21,6 @@ use Tester\Assert;
 
 class TestPresenterResult
 {
-
 	/** @var IRouter */
 	private $router;
 
@@ -41,7 +40,7 @@ class TestPresenterResult
 	private $badRequestException;
 
 	/** @var bool */
-	private $responseInspected = FALSE;
+	private $responseInspected = false;
 
 
 	public function __construct(IRouter $router, Request $request, IPresenter $presenter, ?IResponse $response, ?BadRequestException $badRequestException)
@@ -77,7 +76,7 @@ class TestPresenterResult
 	public function getResponse(): IResponse
 	{
 		Assert::null($this->badRequestException);
-		assert($this->response !== NULL);
+		assert($this->response !== null);
 		return $this->response;
 	}
 
@@ -104,7 +103,7 @@ class TestPresenterResult
 	{
 		if (!$this->textResponseSource) {
 			$source = $this->getTextResponse()->getSource();
-			$this->textResponseSource = is_object($source) ? $source->__toString(TRUE) : (string) $source;
+			$this->textResponseSource = is_object($source) ? $source->__toString(true) : (string) $source;
 			Assert::type('string', $this->textResponseSource);
 		}
 		return $this->textResponseSource;
@@ -123,15 +122,14 @@ class TestPresenterResult
 	public function getBadRequestException(): BadRequestException
 	{
 		Assert::null($this->response);
-		assert($this->badRequestException !== NULL);
+		assert($this->badRequestException !== null);
 		return $this->badRequestException;
 	}
 
 
-
-	public function assertHasResponse(string $type = NULL): self
+	public function assertHasResponse(string $type = null): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		Assert::type($type ?? IResponse::class, $this->response);
 
 		return $this;
@@ -141,15 +139,15 @@ class TestPresenterResult
 	/**
 	 * @param string|array|NULL $match
 	 */
-	public function assertRenders($match = NULL): self
+	public function assertRenders($match = null): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		if (is_array($match)) {
 			$match = '%A?%' . implode('%A?%', $match) . '%A?%';
 		}
-		assert(is_string($match) || $match === NULL);
+		assert(is_string($match) || $match === null);
 		$source = $this->getTextResponseSource();
-		if ($match !== NULL) {
+		if ($match !== null) {
 			Assert::match($match, $source);
 		}
 		return $this;
@@ -165,7 +163,7 @@ class TestPresenterResult
 			$matches = [$matches];
 		}
 		assert(is_array($matches));
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		$source = $this->getTextResponseSource();
 		foreach ($matches as $match) {
 			assert(is_string($match));
@@ -182,9 +180,9 @@ class TestPresenterResult
 	/**
 	 * @param array|object|NULL $expected
 	 */
-	public function assertJson($expected = NULL): self
+	public function assertJson($expected = null): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		$response = $this->getJsonResponse();
 		if (func_num_args() !== 0) {
 			Assert::equal($expected, $response->getPayload());
@@ -198,13 +196,13 @@ class TestPresenterResult
 	 */
 	public function assertRedirects(string $presenterName, array $parameters = []): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		$response = $this->getRedirectResponse();
 		$url = $response->getUrl();
 
 		$httpRequest = new HttpRequest(new UrlScript($url, '/'));
 		$result = $this->router->match($httpRequest);
-		PresenterAssert::assertRequestMatch(new Request($presenterName, NULL, $parameters), $result);
+		PresenterAssert::assertRequestMatch(new Request($presenterName, null, $parameters), $result);
 
 		return $this;
 	}
@@ -212,7 +210,7 @@ class TestPresenterResult
 
 	public function assertRedirectsUrl(string $url): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		$response = $this->getRedirectResponse();
 		Assert::match($url, $response->getUrl());
 
@@ -222,13 +220,13 @@ class TestPresenterResult
 
 	public function assertFormValid(string $formName): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		$presenter = $this->getUIPresenter();
-		$form = $presenter->getComponent($formName, FALSE);
+		$form = $presenter->getComponent($formName, false);
 		Assert::type(Form::class, $form);
 		assert($form instanceof Form);
 		if ($form->hasErrors()) {
-			$controls = $form->getComponents(TRUE, IControl::class);
+			$controls = $form->getComponents(true, IControl::class);
 			$errorsStr = [];
 			foreach ($form->getOwnErrors() as $error) {
 				$errorsStr[] = "\town error: " . $error;
@@ -251,9 +249,9 @@ class TestPresenterResult
 
 	public function assertFormHasErrors(string $formName, ?array $formErrors = null): self
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		$presenter = $this->getUIPresenter();
-		$form = $presenter->getComponent($formName, FALSE);
+		$form = $presenter->getComponent($formName, false);
 		Assert::type(Form::class, $form);
 		assert($form instanceof Form);
 		Assert::true($form->hasErrors());
@@ -266,17 +264,17 @@ class TestPresenterResult
 	}
 
 
-	public function assertBadRequest(int $code = NULL, string $messagePattern = NULL)
+	public function assertBadRequest(int $code = null, string $messagePattern = null)
 	{
-		$this->responseInspected = TRUE;
+		$this->responseInspected = true;
 		Assert::type(BadRequestException::class, $this->badRequestException);
-		assert($this->badRequestException !== NULL);
+		assert($this->badRequestException !== null);
 
-		if ($code !== NULL) {
+		if ($code !== null) {
 			Assert::same($code, $this->badRequestException->getHttpCode());
 		}
 
-		if ($messagePattern !== NULL) {
+		if ($messagePattern !== null) {
 			Assert::match($messagePattern, $this->badRequestException->getMessage());
 		}
 

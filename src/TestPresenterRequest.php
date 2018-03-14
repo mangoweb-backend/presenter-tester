@@ -32,13 +32,13 @@ class TestPresenterRequest
 	private $files = [];
 
 	/** @var bool */
-	private $ajax = FALSE;
+	private $ajax = false;
 
 	/** @var NULL|string */
 	private $componentClass;
 
 	/** @var bool */
-	private $shouldHaveIdentity = FALSE;
+	private $shouldHaveIdentity = false;
 
 	/** @var IIdentity|NULL */
 	private $identity;
@@ -113,19 +113,19 @@ class TestPresenterRequest
 
 
 	/**
-	 * @param string      $signal
-	 * @param array       $componentParameters
+	 * @param string $signal
+	 * @param array $componentParameters
 	 * @param string|NULL $componentClass required for a secured signal
 	 * @return TestPresenterRequest
 	 */
-	public function withSignal(string $signal, array $componentParameters = [], string $componentClass = NULL): TestPresenterRequest
+	public function withSignal(string $signal, array $componentParameters = [], string $componentClass = null): TestPresenterRequest
 	{
 		assert(!isset($this->parameters['do']));
 		$request = clone $this;
 		$request->componentClass = $componentClass;
 		$request->parameters['do'] = $signal;
 		$lastDashPosition = strrpos($signal, '-');
-		$componentName = $lastDashPosition !== FALSE ? substr($signal, 0, $lastDashPosition) : '';
+		$componentName = $lastDashPosition !== false ? substr($signal, 0, $lastDashPosition) : '';
 
 		if ($componentClass && class_exists(NextrasSecuredHelpers::class)) {
 			$csrfToken = NextrasSecuredHelpers::getCsrfToken(
@@ -162,11 +162,11 @@ class TestPresenterRequest
 	}
 
 
-	public function withForm(string $formName, array $post, array $files = [], bool $withProtection = TRUE): TestPresenterRequest
+	public function withForm(string $formName, array $post, array $files = [], bool $withProtection = true): TestPresenterRequest
 	{
 		$request = $this->withSignal("$formName-submit");
 		if ($withProtection) {
-			$token = 'abcdefghij' . base64_encode(sha1(('mango.token' ^ $this->session->getId()) . 'abcdefghij', TRUE));
+			$token = 'abcdefghij' . base64_encode(sha1(('mango.token' ^ $this->session->getId()) . 'abcdefghij', true));
 			$post = $post + ['_token_' => $token];
 		}
 		$request->post = $post;
@@ -176,7 +176,7 @@ class TestPresenterRequest
 	}
 
 
-	public function withAjax(bool $enable = TRUE): TestPresenterRequest
+	public function withAjax(bool $enable = true): TestPresenterRequest
 	{
 		$request = clone $this;
 		$request->ajax = $enable;
@@ -212,10 +212,10 @@ class TestPresenterRequest
 	}
 
 
-	public function withIdentity(IIdentity $identity = NULL): TestPresenterRequest
+	public function withIdentity(IIdentity $identity = null): TestPresenterRequest
 	{
 		$request = clone $this;
-		$request->shouldHaveIdentity = TRUE;
+		$request->shouldHaveIdentity = true;
 		$request->identity = $identity;
 
 		return $request;
