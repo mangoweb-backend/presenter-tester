@@ -1,0 +1,17 @@
+language: php
+
+php:
+    - 7.1
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+before_script:
+    - composer self-update --no-interaction
+
+jobs:
+    include:
+        - stage: PHPStan
+          install: composer update --prefer-dist
+          script: vendor/bin/phpstan analyse --configuration phpstan.neon --level 7 src/
