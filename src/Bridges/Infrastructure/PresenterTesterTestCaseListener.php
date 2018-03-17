@@ -5,6 +5,7 @@ namespace Mangoweb\Tester\PresenterTester\Bridges\Infrastructure;
 use Mangoweb\Tester\Infrastructure\ITestCaseListener;
 use Mangoweb\Tester\Infrastructure\TestCase;
 use Mangoweb\Tester\PresenterTester\PresenterTester;
+use Nette\DI\Container;
 use Tester\Assert;
 
 
@@ -14,12 +15,12 @@ class PresenterTesterTestCaseListener implements ITestCaseListener
 	public $presenterTester;
 
 
-	public function setUp(TestCase $testCase): void
+	public function setUp(TestCase $testCase, Container $applicationContainer, \ReflectionMethod $testMethod): void
 	{
 	}
 
 
-	public function tearDown(TestCase $testCase): void
+	public function tearDown(TestCase $testCase, Container $applicationContainer, \ReflectionMethod $testMethod): void
 	{
 		if (!$this->presenterTester) {
 			return;
