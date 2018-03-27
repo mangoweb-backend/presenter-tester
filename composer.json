@@ -6,6 +6,7 @@
 		"nette/application": "~2.4",
 		"nette/security": "~2.4",
 		"nette/forms": "~2.4",
+		"nette/utils": "~2.4",
 		"nette/tester": "~2.0"
 	},
 	"require-dev": {

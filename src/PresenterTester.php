@@ -13,11 +13,24 @@ use Nette\Http\Request;
 use Nette\Http\Session;
 use Nette\Http\UrlScript;
 use Nette\Security\User;
+use Nette\SmartObject;
 use Tester\Assert;
 
 
+/**
+ * @method onApplicationRequestCreated(AppRequest $applicationRequest)
+ * @method onPresenterCreated(IPresenter $presenter)
+ */
 class PresenterTester
 {
+	use SmartObject;
+
+	/** @var callable[] */
+	public $onApplicationRequestCreated;
+
+	/** @var callable[] */
+	public $onPresenterCreated;
+
 	/** @var Session */
 	private $session;
 
@@ -68,7 +81,9 @@ class PresenterTester
 	public function execute(TestPresenterRequest $testRequest): TestPresenterResult
 	{
 		$applicationRequest = $this->createApplicationRequest($testRequest);
+		$this->onApplicationRequestCreated($applicationRequest);
 		$presenter = $this->createPresenter($testRequest);
+		$this->onPresenterCreated($presenter);
 		if ($applicationRequest->getMethod() === 'GET') {
 			$matchedRequest = $this->router->match($this->httpRequest);
 			PresenterAssert::assertRequestMatch($applicationRequest, $matchedRequest);
