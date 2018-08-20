@@ -28,6 +28,9 @@ class TestPresenterRequest
 	/** @var array */
 	private $post = [];
 
+	/** @var string|NULL */
+	private $rawBody;
+
 	/** @var array */
 	private $files = [];
 
@@ -79,6 +82,12 @@ class TestPresenterRequest
 	public function getPost(): array
 	{
 		return $this->post;
+	}
+
+
+	public function getRawBody(): ?string
+	{
+		return $this->rawBody;
 	}
 
 
@@ -171,6 +180,15 @@ class TestPresenterRequest
 		}
 		$request->post = $post;
 		$request->files = $files;
+
+		return $request;
+	}
+
+
+	public function withRawBody(string $rawBody): TestPresenterRequest
+	{
+		$request = clone $this;
+		$request->rawBody = $rawBody;
 
 		return $request;
 	}
