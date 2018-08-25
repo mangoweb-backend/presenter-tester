@@ -1,0 +1,6 @@
+application:
+	scanDirs: false
+security:
+	debugger: false
+di:
+	debugger: false

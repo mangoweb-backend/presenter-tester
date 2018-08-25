@@ -2,6 +2,7 @@ language: php
 
 php:
     - 7.1
+    - 7.2
 
 cache:
     directories:
@@ -9,9 +10,7 @@ cache:
 
 before_script:
     - composer self-update --no-interaction
-
-jobs:
-    include:
-        - stage: PHPStan
-          install: composer update --prefer-dist
-          script: vendor/bin/phpstan analyse --configuration phpstan.neon --level 7 src/
+    - composer update --no-interaction --prefer-dist
+script:
+    - if [ "$TRAVIS_PHP_VERSION" == "7.2" ]; then vendor/bin/phpstan analyse --configuration phpstan.neon --level 7 src/; fi
+    - vendor/bin/tester test/cases

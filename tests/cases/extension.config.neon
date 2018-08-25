@@ -1,0 +1,6 @@
+extensions:
+	mango.presenterTester: Mangoweb\Tester\PresenterTester\Bridges\Infrastructure\PresenterTesterExtension
+mango.presenterTester:
+	baseUrl: http://mango.dev
+services:
+	- MangowebTests\Tester\PresenterTester\TestPresenterTesterListener
