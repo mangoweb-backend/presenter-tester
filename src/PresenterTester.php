@@ -36,6 +36,9 @@ class PresenterTester
 	/** @var User */
 	private $user;
 
+	/** @var IPresenterTesterListener[] */
+	private $listeners;
+
 	/** @var callable|NULL */
 	private $identityFactory;
 
@@ -43,6 +46,9 @@ class PresenterTester
 	private $results = [];
 
 
+	/**
+	 * @param IPresenterTesterListener[] $listeners
+	 */
 	public function __construct(
 		string $baseUrl,
 		Session $session,
@@ -50,6 +56,7 @@ class PresenterTester
 		IRouter $router,
 		IRequest $httpRequest,
 		User $user,
+		array $listeners = [],
 		callable $identityFactory = null
 	)
 	{
@@ -61,12 +68,16 @@ class PresenterTester
 		$this->httpRequest = $httpRequest;
 		$this->baseUrl = $baseUrl;
 		$this->user = $user;
+		$this->listeners = $listeners;
 		$this->identityFactory = $identityFactory;
 	}
 
 
 	public function execute(TestPresenterRequest $testRequest): TestPresenterResult
 	{
+		foreach ($this->listeners as $listener) {
+			$testRequest = $listener->onRequest($testRequest);
+		}
 		$applicationRequest = $this->createApplicationRequest($testRequest);
 		$presenter = $this->createPresenter($testRequest);
 		if ($applicationRequest->getMethod() === 'GET') {
@@ -93,6 +104,9 @@ class PresenterTester
 		}
 
 		$result = new TestPresenterResult($this->router, $applicationRequest, $presenter, $response, $badRequestException);
+		foreach ($this->listeners as $listener) {
+			$listener->onResult($result);
+		}
 		$this->results[] = $result;
 
 		return $result;

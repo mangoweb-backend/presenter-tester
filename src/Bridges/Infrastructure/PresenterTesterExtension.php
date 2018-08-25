@@ -3,7 +3,9 @@
 namespace Mangoweb\Tester\PresenterTester\Bridges\Infrastructure;
 
 use Mangoweb\Tester\Infrastructure\MangoTesterExtension;
+use Mangoweb\Tester\PresenterTester\IPresenterTesterListener;
 use Mangoweb\Tester\PresenterTester\PresenterTester;
+use Nette\Application\Application;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
 use Nette\DI\CompilerExtension;
@@ -24,11 +26,8 @@ class PresenterTesterExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$config = $this->validateConfig($this->defaults);
-
 		$builder->addDefinition($this->prefix('presenterTester'))
 			->setClass(PresenterTester::class)
-			->setArguments(['baseUrl' => $config['baseUrl'], 'identityFactory' => $config['identityFactory']])
 			->addSetup(new Statement('?->? = ?',
 				[
 					$this->prefix('@presenterTesterTearDown'),
@@ -43,6 +42,20 @@ class PresenterTesterExtension extends CompilerExtension
 		$this->requireService(IRouter::class);
 		$this->requireService(IRequest::class);
 		$this->requireService(Session::class);
+		$this->requireService(Application::class);
+	}
+
+
+	public function beforeCompile()
+	{
+		$config = $this->validateConfig($this->defaults);
+		$builder = $this->getContainerBuilder();;
+		$builder->getDefinition($this->prefix('presenterTester'))
+			->setArguments([
+				'baseUrl' => $config['baseUrl'],
+				'identityFactory' => $config['identityFactory'],
+				'listeners' => $builder->findByType(IPresenterTesterListener::class),
+			]);
 	}
 
 
