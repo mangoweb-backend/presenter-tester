@@ -163,6 +163,7 @@ class PresenterTester
 
 		\Closure::bind(function () use ($request, $url) {
 			/** @var Request $this */
+			$this->headers = $request->getHeaders() + $this->headers;
 			if ($request->isAjax()) {
 				$this->headers['x-requested-with'] = 'XMLHttpRequest';
 			} else {
