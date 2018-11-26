@@ -19,6 +19,9 @@ class TestPresenterRequest
 	/** @var string */
 	private $methodName = 'GET';
 
+	/** @var array */
+	private $headers = [];
+
 	/** @var string */
 	private $presenterName;
 
@@ -64,6 +67,12 @@ class TestPresenterRequest
 	public function getMethodName(): string
 	{
 		return $this->methodName;
+	}
+
+
+	public function getHeaders(): array
+	{
+		return $this->headers;
 	}
 
 
@@ -189,6 +198,15 @@ class TestPresenterRequest
 	{
 		$request = clone $this;
 		$request->rawBody = $rawBody;
+
+		return $request;
+	}
+
+
+	public function withHeaders(array $headers): TestPresenterRequest
+	{
+		$request = clone $this;
+		$request->headers = array_change_key_case($headers, CASE_LOWER) + $request->headers;
 
 		return $request;
 	}
