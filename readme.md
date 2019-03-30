@@ -1,5 +1,6 @@
 Mango Presenter Tester
 ======
+[![Build Status](https://travis-ci.org/mangoweb-backend/presenter-tester.svg?branch=master)](https://travis-ci.org/mangoweb-backend/presenter-tester)
 
 Testing tool for Nette presenter with easy to use API.
 
