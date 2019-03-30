@@ -13,4 +13,4 @@ before_script:
     - composer update --no-interaction --prefer-dist
 script:
     - if [ "$TRAVIS_PHP_VERSION" == "7.2" ]; then vendor/bin/phpstan analyse --configuration phpstan.neon --level 7 src/; fi
-    - vendor/bin/tester test/cases
+    - vendor/bin/tester tests/cases
