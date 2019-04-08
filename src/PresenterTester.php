@@ -81,8 +81,8 @@ class PresenterTester
 		$applicationRequest = $this->createApplicationRequest($testRequest);
 		$presenter = $this->createPresenter($testRequest);
 		if ($applicationRequest->getMethod() === 'GET') {
-			$matchedRequest = $this->router->match($this->httpRequest);
-			PresenterAssert::assertRequestMatch($applicationRequest, $matchedRequest);
+			$params = $this->router->match($this->httpRequest);
+			PresenterAssert::assertRequestMatch($applicationRequest, $params);
 		}
 
 		try {
@@ -172,8 +172,9 @@ class PresenterTester
 	protected function setupHttpRequest(TestPresenterRequest $request): void
 	{
 		$appRequest = $this->createApplicationRequest($request);
-		$refUrl = (new UrlScript($this->baseUrl))->setScriptPath('/');
-		$url = (new UrlScript($this->router->constructUrl($appRequest, $refUrl)))->setScriptPath('/');
+		$refUrl = new UrlScript($this->baseUrl, '/');
+
+		$url = new UrlScript($this->router->constructUrl($appRequest->toArray(), $refUrl), '/');
 
 		\Closure::bind(function () use ($request, $url) {
 			/** @var Request $this */

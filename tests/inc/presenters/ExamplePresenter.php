@@ -18,6 +18,9 @@ class ExamplePresenter extends Presenter
 	}
 
 
+	/**
+	 * @crossOrigin
+	 */
 	public function handleSignal(string $value)
 	{
 		$this->sendResponse(new TextResponse('signal processed with ' . $value));

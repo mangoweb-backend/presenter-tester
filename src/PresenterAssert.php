@@ -3,6 +3,7 @@
 namespace Mangoweb\Tester\PresenterTester;
 
 use Nette\Application\Request;
+use Nette\Application\UI;
 use Nette\StaticClass;
 use Tester\Assert;
 
@@ -12,14 +13,18 @@ class PresenterAssert
 	use StaticClass;
 
 
-	public static function assertRequestMatch(Request $expected, ?Request $actual, bool $onlyIntersectedParameters = true): void
+	public static function assertRequestMatch(Request $expected, ?array $actual, bool $onlyIntersectedParameters = true): void
 	{
 		Assert::notSame(null, $actual);
 		assert($actual !== null);
-		Assert::same($expected->getPresenterName(), $actual->getPresenterName());
+
+		$presenter = $actual[UI\Presenter::PRESENTER_KEY] ?? null;
+		Assert::same($expected->getPresenterName(), $presenter);
+		unset($actual[UI\Presenter::PRESENTER_KEY]);
+
 		$expectedParameters = $expected->getParameters();
-		$actualParameters = $actual->getParameters();
-		foreach ($actualParameters as $key => $actualParameter) {
+
+		foreach ($actual as $key => $actualParameter) {
 			if (!isset($expectedParameters[$key])) {
 				if ($onlyIntersectedParameters) {
 					continue;

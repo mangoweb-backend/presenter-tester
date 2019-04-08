@@ -9,7 +9,8 @@ use Nette\Application\Application;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Statement;
+use Nette\DI\Definitions\ServiceDefinition;
+use Nette\DI\Definitions\Statement;
 use Nette\Http\IRequest;
 use Nette\Http\Session;
 use Nette\Security\User;
@@ -50,12 +51,13 @@ class PresenterTesterExtension extends CompilerExtension
 	{
 		$config = $this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();;
-		$builder->getDefinition($this->prefix('presenterTester'))
-			->setArguments([
-				'baseUrl' => $config['baseUrl'],
-				'identityFactory' => $config['identityFactory'],
-				'listeners' => $builder->findByType(IPresenterTesterListener::class),
-			]);
+		$definition = $builder->getDefinition($this->prefix('presenterTester'));
+		assert($definition instanceof ServiceDefinition);
+		$definition->setArguments([
+			'baseUrl' => $config['baseUrl'],
+			'identityFactory' => $config['identityFactory'],
+			'listeners' => $builder->findByType(IPresenterTesterListener::class),
+		]);
 	}
 
 
@@ -65,7 +67,6 @@ class PresenterTesterExtension extends CompilerExtension
 		$name = preg_replace('#\W+#', '_', $class);
 		$builder->addDefinition($this->prefix($name))
 			->setClass($class)
-			->setDynamic()
 			->addTag(MangoTesterExtension::TAG_REQUIRE);
 	}
 }
