@@ -103,7 +103,7 @@ class TestPresenterResult
 	{
 		if (!$this->textResponseSource) {
 			$source = $this->getTextResponse()->getSource();
-			$this->textResponseSource = is_object($source) ? $source->__toString(true) : (string) $source;
+			$this->textResponseSource = is_object($source) && method_exists($source, '__toString') ? $source->__toString(true) : (string) $source;
 			Assert::type('string', $this->textResponseSource);
 		}
 		return $this->textResponseSource;
@@ -142,14 +142,16 @@ class TestPresenterResult
 	public function assertRenders($match = null): self
 	{
 		$this->responseInspected = true;
-		if (is_array($match)) {
+		$source = $this->getTextResponseSource();
+
+		if (is_null($match)) {
+			return $this;
+
+		} elseif (is_array($match)) {
 			$match = '%A?%' . implode('%A?%', $match) . '%A?%';
 		}
-		assert(is_string($match) || $match === null);
-		$source = $this->getTextResponseSource();
-		if ($match !== null) {
-			Assert::match($match, $source);
-		}
+
+		Assert::match($match, $source);
 		return $this;
 	}
 
@@ -264,7 +266,7 @@ class TestPresenterResult
 	}
 
 
-	public function assertBadRequest(int $code = null, string $messagePattern = null)
+	public function assertBadRequest(int $code = null, string $messagePattern = null): self
 	{
 		$this->responseInspected = true;
 		Assert::type(BadRequestException::class, $this->badRequestException);
