@@ -3,5 +3,4 @@ parameters:
 		- Nette\Http\SessionSection
 	ignoreErrors:
 		- '#Call to an undefined method object\:\:__toString\(\)#'
-		- '#Call to an undefined method object\:\:getId\(\)#'
-		- '#Call to an undefined method Nette\\Application\\IPresenter::isSignalProcessed\(\)#'
+		- '#Property Nette\\Http\\Request::\$(.*) is not writable.#'

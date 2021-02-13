@@ -8,12 +8,12 @@ use Mangoweb\Tester\PresenterTester\TestPresenterResult;
 
 class TestPresenterTesterListener implements IPresenterTesterListener
 {
+
 	/** @var bool */
 	public $enabled = false;
 
 	/** @var TestPresenterResult|null */
 	public $passedResult;
-
 
 	public function onRequest(TestPresenterRequest $request): TestPresenterRequest
 	{
@@ -22,7 +22,6 @@ class TestPresenterTesterListener implements IPresenterTesterListener
 		}
 		return $request->withParameters(['action' => 'render']);
 	}
-
 
 	public function onResult(TestPresenterResult $result): void
 	{

@@ -17,13 +17,16 @@ use Nette\Security\User;
 
 class PresenterTesterExtension extends CompilerExtension
 {
+
+	/**
+	 * @var array<mixed>
+	 */
 	public $defaults = [
 		'baseUrl' => 'https://test.dev',
 		'identityFactory' => null,
 	];
 
-
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
 
@@ -46,8 +49,7 @@ class PresenterTesterExtension extends CompilerExtension
 		$this->requireService(Application::class);
 	}
 
-
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		$config = $this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();;
@@ -60,8 +62,7 @@ class PresenterTesterExtension extends CompilerExtension
 		]);
 	}
 
-
-	private function requireService(string $class)
+	private function requireService(string $class): void
 	{
 		$builder = $this->getContainerBuilder();
 		$name = preg_replace('#\W+#', '_', $class);

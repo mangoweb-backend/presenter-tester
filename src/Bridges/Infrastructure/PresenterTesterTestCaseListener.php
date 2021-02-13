@@ -7,17 +7,15 @@ use Mangoweb\Tester\Infrastructure\TestCase;
 use Mangoweb\Tester\PresenterTester\PresenterTester;
 use Tester\Assert;
 
-
 class PresenterTesterTestCaseListener implements ITestCaseListener
 {
+
 	/** @var PresenterTester|NULL */
 	public $presenterTester;
-
 
 	public function setUp(TestCase $testCase): void
 	{
 	}
-
 
 	public function tearDown(TestCase $testCase): void
 	{

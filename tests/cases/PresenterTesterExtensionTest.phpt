@@ -10,7 +10,6 @@ use Tester\Assert;
 $appConfigurator = require __DIR__ . '/../bootstrap.configurator.php';
 assert($appConfigurator instanceof InfrastructureConfigurator);
 
-
 /**
  * @testCase
  */
@@ -23,13 +22,11 @@ class PresenterTesterExtensionTest extends TestCase
 	/** @var TestPresenterTesterListener */
 	private $listener;
 
-
 	public function __construct(PresenterTester $presenterTester, TestPresenterTesterListener $listener)
 	{
 		$this->presenterTester = $presenterTester;
 		$this->listener = $listener;
 	}
-
 
 	public function testExtension()
 	{
@@ -42,7 +39,6 @@ class PresenterTesterExtensionTest extends TestCase
 		Assert::same([$this->listener], array_values($rpListeners->getValue($this->presenterTester)));
 	}
 }
-
 
 $appConfigurator->addConfig(__DIR__ . '/extension.config.neon');
 $factory = $appConfigurator->getContainerFactory();

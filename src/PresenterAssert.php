@@ -7,12 +7,15 @@ use Nette\Application\UI;
 use Nette\StaticClass;
 use Tester\Assert;
 
-
 class PresenterAssert
 {
+
 	use StaticClass;
 
-
+	/**
+	 * @param array<mixed>|null $actual
+	 * @throws \Tester\AssertException
+	 */
 	public static function assertRequestMatch(Request $expected, ?array $actual, bool $onlyIntersectedParameters = true): void
 	{
 		Assert::notSame(null, $actual);
