@@ -8,12 +8,12 @@ use Tester\Assert;
 
 $factory = require __DIR__ . '/../bootstrap.php';
 
-
 /**
  * @testCase
  */
 class PresenterTesterListenerTest extends TestCase
 {
+
 	public function testRender(PresenterTester $presenterTester, TestPresenterTesterListener $listener)
 	{
 		$listener->enabled = true;
@@ -27,6 +27,5 @@ class PresenterTesterListenerTest extends TestCase
 		Assert::same($response, $listener->passedResult);
 	}
 }
-
 
 PresenterTesterListenerTest::run($factory);

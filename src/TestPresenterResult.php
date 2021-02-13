@@ -18,9 +18,9 @@ use Nette\Http\Request as HttpRequest;
 use Nette\Http\UrlScript;
 use Tester\Assert;
 
-
 class TestPresenterResult
 {
+
 	/** @var IRouter */
 	private $router;
 
@@ -42,7 +42,6 @@ class TestPresenterResult
 	/** @var bool */
 	private $responseInspected = false;
 
-
 	public function __construct(IRouter $router, Request $request, IPresenter $presenter, ?IResponse $response, ?BadRequestException $badRequestException)
 	{
 		$this->presenter = $presenter;
@@ -52,18 +51,15 @@ class TestPresenterResult
 		$this->request = $request;
 	}
 
-
 	public function getRequest(): Request
 	{
 		return $this->request;
 	}
 
-
 	public function getPresenter(): IPresenter
 	{
 		return $this->presenter;
 	}
-
 
 	public function getUIPresenter(): Presenter
 	{
@@ -72,14 +68,12 @@ class TestPresenterResult
 		return $this->presenter;
 	}
 
-
 	public function getResponse(): IResponse
 	{
 		Assert::null($this->badRequestException);
 		assert($this->response !== null);
 		return $this->response;
 	}
-
 
 	public function getRedirectResponse(): RedirectResponse
 	{
@@ -89,7 +83,6 @@ class TestPresenterResult
 		return $response;
 	}
 
-
 	public function getTextResponse(): TextResponse
 	{
 		$response = $this->getResponse();
@@ -97,7 +90,6 @@ class TestPresenterResult
 		assert($response instanceof TextResponse);
 		return $response;
 	}
-
 
 	public function getTextResponseSource(): string
 	{
@@ -109,7 +101,6 @@ class TestPresenterResult
 		return $this->textResponseSource;
 	}
 
-
 	public function getJsonResponse(): JsonResponse
 	{
 		$response = $this->getResponse();
@@ -118,14 +109,12 @@ class TestPresenterResult
 		return $response;
 	}
 
-
 	public function getBadRequestException(): BadRequestException
 	{
 		Assert::null($this->response);
 		assert($this->badRequestException !== null);
 		return $this->badRequestException;
 	}
-
 
 	public function assertHasResponse(string $type = null): self
 	{
@@ -135,9 +124,8 @@ class TestPresenterResult
 		return $this;
 	}
 
-
 	/**
-	 * @param string|array|NULL $match
+	 * @param mixed $match
 	 */
 	public function assertRenders($match = null): self
 	{
@@ -153,9 +141,8 @@ class TestPresenterResult
 		return $this;
 	}
 
-
 	/**
-	 * @param string|array $matches
+	 * @param string|array<mixed> $matches
 	 */
 	public function assertNotRenders($matches): self
 	{
@@ -176,9 +163,8 @@ class TestPresenterResult
 		return $this;
 	}
 
-
 	/**
-	 * @param array|object|NULL $expected
+	 * @param array<mixed>|object|NULL $expected
 	 */
 	public function assertJson($expected = null): self
 	{
@@ -190,9 +176,8 @@ class TestPresenterResult
 		return $this;
 	}
 
-
 	/**
-	 * @param array $parameters optional parameters, extra parameters in a redirect request are ignored
+	 * @param array<string> $parameters optional parameters, extra parameters in a redirect request are ignored
 	 */
 	public function assertRedirects(string $presenterName, array $parameters = []): self
 	{
@@ -207,7 +192,6 @@ class TestPresenterResult
 		return $this;
 	}
 
-
 	public function assertRedirectsUrl(string $url): self
 	{
 		$this->responseInspected = true;
@@ -216,7 +200,6 @@ class TestPresenterResult
 
 		return $this;
 	}
-
 
 	public function assertFormValid(string $formName): self
 	{
@@ -246,7 +229,10 @@ class TestPresenterResult
 		return $this;
 	}
 
-
+	/**
+	 * @param array<mixed>|null $formErrors
+	 * @throws \Exception
+	 */
 	public function assertFormHasErrors(string $formName, ?array $formErrors = null): self
 	{
 		$this->responseInspected = true;
@@ -263,8 +249,7 @@ class TestPresenterResult
 		return $this;
 	}
 
-
-	public function assertBadRequest(int $code = null, string $messagePattern = null)
+	public function assertBadRequest(int $code = null, string $messagePattern = null): self
 	{
 		$this->responseInspected = true;
 		Assert::type(BadRequestException::class, $this->badRequestException);
@@ -280,7 +265,6 @@ class TestPresenterResult
 
 		return $this;
 	}
-
 
 	/**
 	 * @internal

@@ -15,9 +15,9 @@ use Nette\Http\UrlScript;
 use Nette\Security\User;
 use Tester\Assert;
 
-
 class PresenterTester
 {
+
 	/** @var Session */
 	private $session;
 
@@ -45,7 +45,6 @@ class PresenterTester
 	/** @var TestPresenterResult[] */
 	private $results = [];
 
-
 	/**
 	 * @param IPresenterTesterListener[] $listeners
 	 */
@@ -71,7 +70,6 @@ class PresenterTester
 		$this->listeners = $listeners;
 		$this->identityFactory = $identityFactory;
 	}
-
 
 	public function execute(TestPresenterRequest $testRequest): TestPresenterResult
 	{
@@ -112,12 +110,10 @@ class PresenterTester
 		return $result;
 	}
 
-
 	public function createRequest(string $presenterName): TestPresenterRequest
 	{
 		return new TestPresenterRequest($presenterName, $this->session);
 	}
-
 
 	/**
 	 * @return TestPresenterResult[]
@@ -126,7 +122,6 @@ class PresenterTester
 	{
 		return $this->results;
 	}
-
 
 	protected function createPresenter(TestPresenterRequest $request): IPresenter
 	{
@@ -140,7 +135,6 @@ class PresenterTester
 		return $presenter;
 	}
 
-
 	protected function createApplicationRequest(TestPresenterRequest $testRequest): AppRequest
 	{
 		return new AppRequest(
@@ -151,7 +145,6 @@ class PresenterTester
 			$testRequest->getFiles()
 		);
 	}
-
 
 	protected function loginUser(TestPresenterRequest $request): void
 	{
@@ -167,7 +160,6 @@ class PresenterTester
 			$this->user->login($identity);
 		}
 	}
-
 
 	protected function setupHttpRequest(TestPresenterRequest $request): void
 	{
@@ -190,7 +182,6 @@ class PresenterTester
 			$this->rawBodyCallback = [$request, 'getRawBody'];
 		}, $this->httpRequest, Request::class)->__invoke();
 	}
-
 
 	protected function setupUIPresenter(Presenter $presenter): void
 	{

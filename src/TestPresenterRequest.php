@@ -8,33 +8,33 @@ use Nette\Security\IIdentity;
 use Nette\SmartObject;
 use Nextras\Application\UI\Helpers as NextrasSecuredHelpers;
 
-
 /**
  * Immutable object
  */
 class TestPresenterRequest
 {
+
 	use SmartObject;
 
 	/** @var string */
 	private $methodName = 'GET';
 
-	/** @var array */
+	/** @var array<mixed> */
 	private $headers = [];
 
 	/** @var string */
 	private $presenterName;
 
-	/** @var array */
+	/** @var array<mixed> */
 	private $parameters = [];
 
-	/** @var array */
+	/** @var array<mixed> */
 	private $post = [];
 
 	/** @var string|NULL */
 	private $rawBody;
 
-	/** @var array */
+	/** @var array<mixed> */
 	private $files = [];
 
 	/** @var bool */
@@ -52,7 +52,6 @@ class TestPresenterRequest
 	/** @var Session */
 	private $session;
 
-
 	public function __construct(string $presenterName, Session $session)
 	{
 		if ($session instanceof \Mangoweb\Tester\HttpMocks\Session) {
@@ -63,77 +62,77 @@ class TestPresenterRequest
 		$this->session = $session;
 	}
 
-
 	public function getMethodName(): string
 	{
 		return $this->methodName;
 	}
 
-
+	/**
+	 * @return array<mixed>
+	 */
 	public function getHeaders(): array
 	{
 		return $this->headers;
 	}
-
 
 	public function getPresenterName(): string
 	{
 		return $this->presenterName;
 	}
 
-
+	/**
+	 * @return array|string[]
+	 */
 	public function getParameters(): array
 	{
 		return $this->parameters + ['action' => 'default'];
 	}
 
-
+	/**
+	 * @return array<mixed>
+	 */
 	public function getPost(): array
 	{
 		return $this->post;
 	}
-
 
 	public function getRawBody(): ?string
 	{
 		return $this->rawBody;
 	}
 
-
+	/**
+	 * @return array<mixed>
+	 */
 	public function getFiles(): array
 	{
 		return $this->files;
 	}
-
 
 	public function isAjax(): bool
 	{
 		return $this->ajax;
 	}
 
-
 	public function getComponentClass(): ?string
 	{
 		return $this->componentClass;
 	}
-
 
 	public function shouldHaveIdentity(): bool
 	{
 		return $this->shouldHaveIdentity;
 	}
 
-
 	public function getIdentity(): ?IIdentity
 	{
 		return $this->identity;
 	}
 
-
 	/**
-	 * @param string $signal
-	 * @param array $componentParameters
-	 * @param string|NULL $componentClass required for a secured signal
+	 * @param string        $signal
+	 * @param array<mixed>  $componentParameters
+	 * @param string|NULL   $componentClass required for a secured signal
 	 * @return TestPresenterRequest
 	 */
 	public function withSignal(string $signal, array $componentParameters = [], string $componentClass = null): TestPresenterRequest
@@ -170,7 +169,6 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
 	public function withMethod(string $methodName): TestPresenterRequest
 	{
 		$request = clone $this;
@@ -179,7 +177,10 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
+	/**
+	 * @param array<mixed>  $post
+	 * @param array<mixed>  $files
+	 */
 	public function withForm(string $formName, array $post, array $files = [], bool $withProtection = true): TestPresenterRequest
 	{
 		$request = $this->withSignal("$formName-submit");
@@ -193,7 +194,6 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
 	public function withRawBody(string $rawBody): TestPresenterRequest
 	{
 		$request = clone $this;
@@ -202,7 +202,9 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
+	/**
+	 * @param array<mixed> $headers
+	 */
 	public function withHeaders(array $headers): TestPresenterRequest
 	{
 		$request = clone $this;
@@ -210,7 +212,6 @@ class TestPresenterRequest
 
 		return $request;
 	}
-
 
 	public function withAjax(bool $enable = true): TestPresenterRequest
 	{
@@ -220,7 +221,9 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
+	/**
+	 * @param array<mixed> $parameters
+	 */
 	public function withParameters(array $parameters): TestPresenterRequest
 	{
 		$request = clone $this;
@@ -229,7 +232,9 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
+	/**
+	 * @param array<mixed> $post
+	 */
 	public function withPost(array $post): TestPresenterRequest
 	{
 		$request = clone $this;
@@ -238,7 +243,9 @@ class TestPresenterRequest
 		return $request;
 	}
 
-
+	/**
+	 * @param array<mixed> $files
+	 */
 	public function withFiles(array $files): TestPresenterRequest
 	{
 		$request = clone $this;
@@ -246,7 +253,6 @@ class TestPresenterRequest
 
 		return $request;
 	}
-
 
 	public function withIdentity(IIdentity $identity = null): TestPresenterRequest
 	{

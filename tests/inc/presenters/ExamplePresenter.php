@@ -7,16 +7,15 @@ use Nette\Application\UI\Presenter;
 
 class ExamplePresenter extends Presenter
 {
+
 	public function actionRender()
 	{
 	}
-
 
 	public function actionError()
 	{
 		$this->error();
 	}
-
 
 	/**
 	 * @crossOrigin

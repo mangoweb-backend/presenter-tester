@@ -9,12 +9,12 @@ use Tester\AssertException;
 
 $factory = require __DIR__ . '/../bootstrap.php';
 
-
 /**
  * @testCase
  */
 class PresenterTesterTest extends TestCase
 {
+
 	public function testRender(PresenterTester $presenterTester)
 	{
 		$request = $presenterTester->createRequest('Example')
@@ -29,7 +29,6 @@ class PresenterTesterTest extends TestCase
 			$response->assertRenders(['Lorem ipsum']);
 		}, AssertException::class);
 	}
-
 
 	public function testError(PresenterTester $presenterTester)
 	{
@@ -46,7 +45,6 @@ class PresenterTesterTest extends TestCase
 		}, AssertException::class);
 	}
 
-
 	public function testSignal(PresenterTester $presenterTester)
 	{
 		$request = $presenterTester->createRequest('Example')
@@ -58,6 +56,5 @@ class PresenterTesterTest extends TestCase
 		});
 	}
 }
-
 
 PresenterTesterTest::run($factory);
