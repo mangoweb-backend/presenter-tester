@@ -2,7 +2,7 @@
 	"name": "mangoweb/presenter-tester",
 	"license": "MIT",
 	"require": {
-		"php": "~7.1",
+		"php": ">=7.1",
 		"nette/application": "~3.0",
 		"nette/security": "~3.0",
 		"nette/forms": "~3.0",
