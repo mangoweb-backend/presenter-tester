@@ -19,31 +19,31 @@ use Tester\Assert;
 class PresenterTester
 {
 	/** @var Session */
-	private $session;
+	protected $session;
 
 	/** @var IPresenterFactory */
-	private $presenterFactory;
+	protected $presenterFactory;
 
 	/** @var IRouter */
-	private $router;
+	protected $router;
 
 	/** @var Request */
-	private $httpRequest;
+	protected $httpRequest;
 
 	/** @var string */
-	private $baseUrl;
+	protected $baseUrl;
 
 	/** @var User */
-	private $user;
+	protected $user;
 
 	/** @var IPresenterTesterListener[] */
 	private $listeners;
 
 	/** @var callable|NULL */
-	private $identityFactory;
+	protected $identityFactory;
 
 	/** @var TestPresenterResult[] */
-	private $results = [];
+	protected $results = [];
 
 
 	/**
